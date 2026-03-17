@@ -9,6 +9,7 @@ type AuthContextValue = {
   role: string | null;
   isAdmin: boolean;
   isArtist: boolean;
+  authError: string | null;
   profile: {
     full_name: string | null;
     artist_name: string | null;
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isArtist, setIsArtist] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const [profile, setProfile] = useState<AuthContextValue["profile"]>(null);
   const [loading, setLoading] = useState(true);
 
@@ -52,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAdmin(false);
         setIsArtist(false);
         setRole(null);
+        setAuthError(null);
         setProfile(null);
         setLoading(false);
         logAuth("resolveRole:no-user");
@@ -76,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAdmin(false);
         setIsArtist(false);
         setRole(null);
+        setAuthError(error.message);
         setProfile(null);
         setLoading(false);
         logAuth("resolveRole:profile-error", error);
@@ -104,12 +108,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
           if (!claimResult.error) {
             profile = claimResult.data;
+            setAuthError(null);
           } else {
+            setAuthError(claimResult.error.message);
             logAuth("resolveRole:claim-refetch-error", claimResult.error);
           }
         } else {
+          setAuthError(claimError.message);
           logAuth("resolveRole:claim-error", claimError);
         }
+      } else {
+        setAuthError(null);
       }
 
       lastResolvedUserId = currentUser.id;
@@ -146,6 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAdmin(false);
         setIsArtist(false);
         setRole(null);
+        setAuthError(null);
         setProfile(null);
         setLoading(false);
         return;
@@ -180,13 +190,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       role,
       isAdmin,
       isArtist,
+      authError,
       profile,
       loading,
       login: (email: string, password: string) =>
         supabase.auth.signInWithPassword({ email, password }),
       logout: () => supabase.auth.signOut(),
     }),
-    [user, role, isAdmin, isArtist, profile, loading],
+    [user, role, isAdmin, isArtist, authError, profile, loading],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

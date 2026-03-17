@@ -6,7 +6,7 @@ import { useAuth } from "@/features/auth/useAuth";
 import { useTheme } from "@/features/theme/ThemeProvider";
 
 export default function LoginPage() {
-  const { user, isAdmin, isArtist, loading, role, logout } = useAuth();
+  const { user, isAdmin, isArtist, loading, role, authError, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   if (!loading && user && (isAdmin || isArtist)) {
@@ -50,6 +50,11 @@ export default function LoginPage() {
                   Pour accéder au web artiste, le profil doit avoir le rôle <span className="theme-text-main font-semibold">artist</span>{" "}
                   ou <span className="theme-text-main font-semibold">admin</span> dans <code>profiles</code>.
                 </p>
+                {authError ? (
+                  <p className="mt-3 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
+                    Détail technique : {authError}
+                  </p>
+                ) : null}
               </div>
               <button
                 type="button"
