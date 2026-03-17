@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Chrome } from "lucide-react";
 
 import { useAuth } from "@/features/auth/useAuth";
 import { supabase } from "@/lib/supabase";
@@ -15,6 +16,20 @@ export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  async function handleGoogleLogin() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/`,
+      },
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+    }
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -189,6 +204,29 @@ export function LoginForm() {
             ? "Créer mon compte artiste"
             : "Se connecter"}
       </button>
+
+      {mode === "login" ? (
+        <>
+          <div className="theme-text-muted flex items-center gap-3 text-xs uppercase tracking-[0.24em]">
+            <span className="h-px flex-1 bg-white/10" />
+            <span>ou</span>
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={loading}
+            className="theme-button-secondary inline-flex w-full items-center justify-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold disabled:opacity-50"
+          >
+            <Chrome size={18} />
+            Continuer avec Google
+          </button>
+        </>
+      ) : (
+        <p className="theme-text-muted text-xs">
+          La creation d&apos;un compte artiste se fait ici par email pour enregistrer le profil et la photo.
+        </p>
+      )}
 
       {mode === "signup" ? (
         <p className="theme-text-muted text-xs">
