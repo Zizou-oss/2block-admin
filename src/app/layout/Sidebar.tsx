@@ -1,20 +1,24 @@
-import { Activity, BarChart3, Disc3, ListMusic, Settings, Sparkles, Users, X } from "lucide-react";
+import { Activity, BarChart3, Disc3, ListMusic, Settings, Sparkles, Users, User, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/features/auth/useAuth";
 
 const navItems = [
-  { to: "/dashboard", label: "Tableau de bord", icon: BarChart3 },
+  { to: "/dashboard", label: "Tableau de bord", icon: BarChart3, adminOnly: true },
   { to: "/songs", label: "Morceaux", icon: ListMusic },
-  { to: "/users", label: "Utilisateurs", icon: Users },
-  { to: "/activity", label: "Activite", icon: Activity },
-  { to: "/settings", label: "Parametres", icon: Settings },
+  { to: "/artist-profile", label: "Profil artiste", icon: User },
+  { to: "/users", label: "Utilisateurs", icon: Users, adminOnly: true },
+  { to: "/activity", label: "Activite", icon: Activity, adminOnly: true },
+  { to: "/settings", label: "Parametres", icon: Settings, adminOnly: true },
 ];
 
 function SidebarLinks({ onNavigate }: { onNavigate?: () => void }) {
+  const { isAdmin } = useAuth();
+  const visibleItems = navItems.filter((item) => !item.adminOnly || isAdmin);
   return (
     <nav className="space-y-1">
-      {navItems.map(({ to, label, icon: Icon }) => (
+      {visibleItems.map(({ to, label, icon: Icon }) => (
         <NavLink
           key={to}
           to={to}

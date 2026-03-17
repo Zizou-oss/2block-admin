@@ -16,10 +16,12 @@ type ProfileNameRow = {
   id: string;
   email: string;
   full_name: string | null;
+  role: string | null;
 };
 
 type UserStatsWithName = UserStatsRow & {
   user_name: string;
+  role: string;
 };
 
 function fallbackNameFromEmail(email: string) {
@@ -79,7 +81,7 @@ export function useUsers() {
       const userIds = Array.from(new Set(rows.map((row) => row.user_id)));
       const { data: profileRows, error: profileError } = await supabase
         .from("profiles")
-        .select("id,email,full_name")
+        .select("id,email,full_name,role")
         .in("id", userIds);
 
       if (profileError) throw profileError;
@@ -95,6 +97,7 @@ export function useUsers() {
         return {
           ...row,
           user_name: userName,
+          role: profile?.role ?? "user",
         };
       });
     },

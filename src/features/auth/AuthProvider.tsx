@@ -6,7 +6,15 @@ import { supabase } from "@/lib/supabase";
 
 type AuthContextValue = {
   user: User | null;
+  role: string | null;
   isAdmin: boolean;
+  isArtist: boolean;
+  profile: {
+    full_name: string | null;
+    artist_name: string | null;
+    artist_bio: string | null;
+    artist_photo_url: string | null;
+  } | null;
   loading: boolean;
   login: (email: string, password: string) => ReturnType<typeof supabase.auth.signInWithPassword>;
   logout: () => ReturnType<typeof supabase.auth.signOut>;
@@ -16,7 +24,10 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isArtist, setIsArtist] = useState(false);
+  const [profile, setProfile] = useState<AuthContextValue["profile"]>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,6 +50,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!currentUser) {
         setUser(null);
         setIsAdmin(false);
+        setIsArtist(false);
+        setRole(null);
+        setProfile(null);
         setLoading(false);
         logAuth("resolveRole:no-user");
         return;
@@ -53,20 +67,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const { data: profile, error } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role, full_name, artist_name, artist_bio, artist_photo_url")
         .eq("id", currentUser.id)
         .maybeSingle();
 
       if (!mounted) return;
       if (error) {
         setIsAdmin(false);
+        setIsArtist(false);
+        setRole(null);
+        setProfile(null);
         setLoading(false);
         logAuth("resolveRole:profile-error", error);
         return;
       }
 
       lastResolvedUserId = currentUser.id;
+      setRole(profile?.role ?? null);
       setIsAdmin(profile?.role === "admin");
+      setIsArtist(profile?.role === "artist");
+      setProfile(
+        profile
+          ? {
+              full_name: profile.full_name ?? null,
+              artist_name: profile.artist_name ?? null,
+              artist_bio: profile.artist_bio ?? null,
+              artist_photo_url: profile.artist_photo_url ?? null,
+            }
+          : null,
+      );
       setLoading(false);
       logAuth("resolveRole:done", { role: profile?.role ?? null });
     }
@@ -85,6 +114,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         lastResolvedUserId = null;
         setUser(null);
         setIsAdmin(false);
+        setIsArtist(false);
+        setRole(null);
+        setProfile(null);
         setLoading(false);
         return;
       }
@@ -115,13 +147,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
+      role,
       isAdmin,
+      isArtist,
+      profile,
       loading,
       login: (email: string, password: string) =>
         supabase.auth.signInWithPassword({ email, password }),
       logout: () => supabase.auth.signOut(),
     }),
-    [user, isAdmin, loading],
+    [user, role, isAdmin, isArtist, profile, loading],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

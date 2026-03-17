@@ -1,9 +1,28 @@
+import { useState } from "react";
+import { toast } from "sonner";
+
 import { DataTable } from "@/components/DataTable";
 import { EmptyState } from "@/components/EmptyState";
 import { useUsers } from "@/features/users/useUsers";
+import { supabase } from "@/lib/supabase";
 
 export default function UsersPage() {
   const { data, isLoading, error } = useUsers();
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  async function updateRole(userId: string, role: string) {
+    setUpdatingId(userId);
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ role })
+      .eq("id", userId);
+    setUpdatingId(null);
+    if (updateError) {
+      toast.error(updateError.message);
+      return;
+    }
+    toast.success(`Role mis a jour: ${role}`);
+  }
 
   return (
     <div className="space-y-4">
@@ -25,6 +44,7 @@ export default function UsersPage() {
           headers={[
             "Nom",
             "Email",
+            "Role",
             "Telechargements",
             "Ecoutes",
             "Secondes ecoutees",
@@ -35,6 +55,18 @@ export default function UsersPage() {
             <tr key={user.user_id}>
               <td className="theme-text-main px-4 py-3 font-medium">{user.user_name}</td>
               <td className="theme-text-soft px-4 py-3">{user.email}</td>
+              <td className="px-4 py-3">
+                <select
+                  value={user.role}
+                  onChange={(e) => updateRole(user.user_id, e.target.value)}
+                  disabled={updatingId === user.user_id}
+                  className="theme-input rounded-lg px-2 py-1 text-xs"
+                >
+                  <option value="user">user</option>
+                  <option value="artist">artist</option>
+                  <option value="admin">admin</option>
+                </select>
+              </td>
               <td className="px-4 py-3">{user.songs_downloaded}</td>
               <td className="px-4 py-3">{user.listening_events}</td>
               <td className="px-4 py-3">{user.seconds_total}</td>

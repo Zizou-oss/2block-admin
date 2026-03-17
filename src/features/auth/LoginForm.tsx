@@ -21,7 +21,7 @@ export function LoginForm() {
       return;
     }
     toast.success("Bienvenue");
-    navigate("/dashboard");
+    navigate("/");
   }
 
   return (

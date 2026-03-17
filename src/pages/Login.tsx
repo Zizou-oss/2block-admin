@@ -6,11 +6,11 @@ import { useAuth } from "@/features/auth/useAuth";
 import { useTheme } from "@/features/theme/ThemeProvider";
 
 export default function LoginPage() {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, isArtist, loading } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
-  if (!loading && user && isAdmin) {
-    return <Navigate to="/dashboard" replace />;
+  if (!loading && user && (isAdmin || isArtist)) {
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -32,9 +32,11 @@ export default function LoginPage() {
         <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-violet-500/20 blur-3xl" />
         <p className="theme-sync-text relative text-xs font-semibold uppercase tracking-[0.24em]">2Block</p>
         <h1 className="theme-title-gradient relative mt-2 text-3xl font-extrabold">
-          Connexion Admin
+          Connexion Admin / Artiste
         </h1>
-        <p className="theme-text-muted relative mt-2 text-sm">Connecte-toi avec ton compte admin.</p>
+        <p className="theme-text-muted relative mt-2 text-sm">
+          Connecte-toi avec ton compte admin ou artiste.
+        </p>
         <div className="mt-6">
           <LoginForm />
         </div>

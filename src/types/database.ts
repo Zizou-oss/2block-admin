@@ -6,8 +6,12 @@ export interface Database {
       profiles: {
         Row: {
           id: string;
-          email: string;
+          email: string | null;
+          phone: string | null;
           full_name: string | null;
+          artist_name: string | null;
+          artist_bio: string | null;
+          artist_photo_url: string | null;
           role: string;
           created_at: string;
         };

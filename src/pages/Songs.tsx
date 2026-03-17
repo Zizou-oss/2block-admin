@@ -5,8 +5,10 @@ import { EmptyState } from "@/components/EmptyState";
 import { SongForm } from "@/features/songs/SongForm";
 import { useSongSocialStats } from "@/features/songs/useSongSocialStats";
 import { useSongs } from "@/features/songs/useSongs";
+import { useAuth } from "@/features/auth/useAuth";
 
 export default function SongsPage() {
+  const { user, profile, isAdmin } = useAuth();
   const [search, setSearch] = useState("");
   const [publishedFilter, setPublishedFilter] = useState<"all" | "published" | "draft">("all");
   const [page, setPage] = useState(1);
@@ -56,6 +58,11 @@ export default function SongsPage() {
   }
 
   const isEditing = editingSongId !== null && editInitialValues !== null;
+  const defaultArtist =
+    profile?.artist_name?.trim()
+    || profile?.full_name?.trim()
+    || user?.email?.split("@")[0]
+    || "2Block Music";
 
   return (
     <div className="space-y-6">
@@ -66,9 +73,15 @@ export default function SongsPage() {
         <p className="theme-text-muted text-sm">
           Upload direct avec drag and drop, édition via formulaire, publication et suppression.
         </p>
-        <p className="theme-text-muted mt-1 text-xs">
-          Notification push automatique: création publiée ou publication d&apos;un brouillon.
-        </p>
+        {isAdmin ? (
+          <p className="theme-text-muted mt-1 text-xs">
+            Notification push automatique: création publiée ou publication d&apos;un brouillon.
+          </p>
+        ) : (
+          <p className="theme-text-muted mt-1 text-xs">
+            Les notifications push restent gérées par le super admin.
+          </p>
+        )}
       </div>
 
       <SongForm
@@ -76,6 +89,7 @@ export default function SongsPage() {
         initialValues={isEditing ? editInitialValues : undefined}
         loading={isEditing ? updateSong.isPending : createSong.isPending}
         uploadProgress={uploadProgress}
+        defaultArtist={defaultArtist}
         onCancelEdit={isEditing ? resetEditMode : undefined}
         onSubmit={async (values) => {
           if (isEditing) {

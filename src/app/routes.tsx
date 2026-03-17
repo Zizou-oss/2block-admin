@@ -1,8 +1,11 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { AdminLayout } from "@/app/layout/AdminLayout";
+import { AdminOnlyRoute } from "@/components/AdminOnlyRoute";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { RoleRedirect } from "@/components/RoleRedirect";
 import ActivityPage from "@/pages/Activity";
+import ArtistProfilePage from "@/pages/ArtistProfile";
 import DashboardPage from "@/pages/Dashboard";
 import LoginPage from "@/pages/Login";
 import SettingsPage from "@/pages/Settings";
@@ -22,12 +25,29 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <Navigate to="/dashboard" replace /> },
-      { path: "dashboard", element: <DashboardPage /> },
+      { index: true, element: <RoleRedirect /> },
+      { path: "dashboard", element: (
+        <AdminOnlyRoute>
+          <DashboardPage />
+        </AdminOnlyRoute>
+      ) },
       { path: "songs", element: <SongsPage /> },
-      { path: "users", element: <UsersPage /> },
-      { path: "activity", element: <ActivityPage /> },
-      { path: "settings", element: <SettingsPage /> },
+      { path: "artist-profile", element: <ArtistProfilePage /> },
+      { path: "users", element: (
+        <AdminOnlyRoute>
+          <UsersPage />
+        </AdminOnlyRoute>
+      ) },
+      { path: "activity", element: (
+        <AdminOnlyRoute>
+          <ActivityPage />
+        </AdminOnlyRoute>
+      ) },
+      { path: "settings", element: (
+        <AdminOnlyRoute>
+          <SettingsPage />
+        </AdminOnlyRoute>
+      ) },
     ],
   },
   {

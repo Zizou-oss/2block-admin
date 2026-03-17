@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { broadcastPush } from "@/lib/pushNotifications";
 import { toast } from "sonner";
+import { useAuth } from "@/features/auth/useAuth";
 
 export type SongRow = {
   id: number;
@@ -26,6 +27,7 @@ export type SongsFilters = {
 export function useSongs(filters: SongsFilters) {
   const qc = useQueryClient();
   const [uploadProgress, setUploadProgress] = useState(0);
+  const { isAdmin } = useAuth();
 
   function getSafeStoragePath(fileName: string) {
     const extMatch = fileName.toLowerCase().match(/\.[a-z0-9]+$/);
@@ -142,15 +144,17 @@ export function useSongs(filters: SongsFilters) {
     onSuccess: async (song) => {
       qc.invalidateQueries({ queryKey: ["songs"] });
       toast.success("Morceau cree");
-      try {
-        await broadcastPush({
-          topic: "song_updates",
-          title: "Nouveau son disponible",
-          body: `${song.title} - ${song.artist}`,
-          data: { song_id: String(song.id) },
-        });
-      } catch (_) {
-        toast.error("Morceau cree, mais notif push non envoyee");
+      if (isAdmin) {
+        try {
+          await broadcastPush({
+            topic: "song_updates",
+            title: "Nouveau son disponible",
+            body: `${song.title} - ${song.artist}`,
+            data: { song_id: String(song.id) },
+          });
+        } catch (_) {
+          toast.error("Morceau cree, mais notif push non envoyee");
+        }
       }
       setTimeout(() => setUploadProgress(0), 600);
     },
@@ -162,10 +166,15 @@ export function useSongs(filters: SongsFilters) {
 
   const setPublished = useMutation({
     mutationFn: async (payload: { songId: number; isPublished: boolean }) => {
-      const { error } = await supabase.rpc("admin_set_song_published", {
-        p_song_id: payload.songId,
-        p_is_published: payload.isPublished,
-      });
+      const { error } = isAdmin
+        ? await supabase.rpc("admin_set_song_published", {
+            p_song_id: payload.songId,
+            p_is_published: payload.isPublished,
+          })
+        : await supabase
+            .from("songs")
+            .update({ is_published: payload.isPublished })
+            .eq("id", payload.songId);
       if (error) throw error;
     },
     onSuccess: async (_, vars) => {
@@ -176,15 +185,17 @@ export function useSongs(filters: SongsFilters) {
       const row = songs.data?.rows.find((item) => item.id === vars.songId);
       const title = row?.title ?? "Un nouveau son";
       const artist = row?.artist ?? "2Block";
-      try {
-        await broadcastPush({
-          topic: "song_updates",
-          title: "Nouveau son disponible",
-          body: `${title} - ${artist}`,
-          data: { song_id: String(vars.songId) },
-        });
-      } catch (_) {
-        toast.error("Morceau publie, mais notif push non envoyee");
+      if (isAdmin) {
+        try {
+          await broadcastPush({
+            topic: "song_updates",
+            title: "Nouveau son disponible",
+            body: `${title} - ${artist}`,
+            data: { song_id: String(vars.songId) },
+          });
+        } catch (_) {
+          toast.error("Morceau publie, mais notif push non envoyee");
+        }
       }
     },
     onError: (e: any) => toast.error(e.message),

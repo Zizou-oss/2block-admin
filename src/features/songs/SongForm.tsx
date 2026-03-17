@@ -25,6 +25,7 @@ export function SongForm({
   uploadProgress = 0,
   mode = "create",
   initialValues,
+  defaultArtist,
   onCancelEdit,
 }: {
   onSubmit: (values: SongFormValues) => Promise<void>;
@@ -32,12 +33,13 @@ export function SongForm({
   uploadProgress?: number;
   mode?: SongFormMode;
   initialValues?: SongFormInitialValues;
+  defaultArtist?: string;
   onCancelEdit?: () => void;
 }) {
   const formContainerRef = useRef<HTMLFormElement | null>(null);
   const titleInputRef = useRef<HTMLInputElement | null>(null);
   const [title, setTitle] = useState("");
-  const [artist, setArtist] = useState("2Block");
+  const [artist, setArtist] = useState("2Block Music");
   const [coverUrl, setCoverUrl] = useState("");
   const [lyrics, setLyrics] = useState("");
   const [lyricsLrc, setLyricsLrc] = useState("");
@@ -47,7 +49,7 @@ export function SongForm({
 
   useEffect(() => {
     setTitle(initialValues?.title ?? "");
-    setArtist(initialValues?.artist ?? "2Block");
+    setArtist(initialValues?.artist ?? defaultArtist ?? "2Block Music");
     setCoverUrl(initialValues?.cover_url ?? "");
     setLyrics(initialValues?.lyrics ?? "");
     setLyricsLrc(initialValues?.lyrics_lrc ?? "");
@@ -69,7 +71,7 @@ export function SongForm({
     if (mode === "create" && !file) return;
     await onSubmit({
       title: title.trim(),
-      artist: artist.trim() || "2Block",
+      artist: artist.trim() || defaultArtist || "2Block Music",
       cover_url: coverUrl.trim() || undefined,
       lyrics: lyrics.trim() || undefined,
       lyrics_lrc: lyricsLrc.trim() || undefined,
@@ -78,7 +80,7 @@ export function SongForm({
 
     if (mode === "create") {
       setTitle("");
-      setArtist("2Block");
+      setArtist(defaultArtist ?? "2Block Music");
       setCoverUrl("");
       setLyrics("");
       setLyricsLrc("");
