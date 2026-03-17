@@ -32,10 +32,10 @@ export default function LoginPage() {
         <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-violet-500/20 blur-3xl" />
         <p className="theme-sync-text relative text-xs font-semibold uppercase tracking-[0.24em]">2Block</p>
         <h1 className="theme-title-gradient relative mt-2 text-3xl font-extrabold">
-          Connexion Admin / Artiste
+          Espace Artiste
         </h1>
         <p className="theme-text-muted relative mt-2 text-sm">
-          Connecte-toi avec ton compte admin ou artiste.
+          Publie tes morceaux, gère ton catalogue et construis ta communauté.
         </p>
         <div className="mt-6">
           <LoginForm />
