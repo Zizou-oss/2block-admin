@@ -6,8 +6,6 @@ import { Chrome } from "lucide-react";
 import { useAuth } from "@/features/auth/useAuth";
 import { supabase } from "@/lib/supabase";
 
-const GOOGLE_ARTIST_INTENT_KEY = "music-admin-google-artist-intent";
-
 export function LoginForm() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -20,7 +18,6 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   async function handleGoogleLogin() {
-    window.localStorage.setItem(GOOGLE_ARTIST_INTENT_KEY, "true");
     setLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -30,7 +27,6 @@ export function LoginForm() {
     });
     setLoading(false);
     if (error) {
-      window.localStorage.removeItem(GOOGLE_ARTIST_INTENT_KEY);
       toast.error(error.message);
     }
   }

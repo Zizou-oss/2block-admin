@@ -4,8 +4,6 @@ import type { User } from "@supabase/supabase-js";
 
 import { supabase } from "@/lib/supabase";
 
-const GOOGLE_ARTIST_INTENT_KEY = "music-admin-google-artist-intent";
-
 type AuthContextValue = {
   user: User | null;
   role: string | null;
@@ -84,9 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const googleArtistIntent = globalThis.localStorage.getItem(GOOGLE_ARTIST_INTENT_KEY) === "true";
-
-      if (googleArtistIntent && profile?.role !== "admin" && profile?.role !== "artist") {
+      if (profile?.role !== "admin" && profile?.role !== "artist") {
         const metadata = currentUser.user_metadata ?? {};
         const fallbackName =
           (typeof metadata.full_name === "string" && metadata.full_name.trim()) ||
@@ -114,10 +110,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           logAuth("resolveRole:claim-error", claimError);
         }
-
-        globalThis.localStorage.removeItem(GOOGLE_ARTIST_INTENT_KEY);
-      } else if (googleArtistIntent) {
-        globalThis.localStorage.removeItem(GOOGLE_ARTIST_INTENT_KEY);
       }
 
       lastResolvedUserId = currentUser.id;
