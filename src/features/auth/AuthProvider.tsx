@@ -4,6 +4,8 @@ import type { User } from "@supabase/supabase-js";
 
 import { supabase } from "@/lib/supabase";
 
+const GOOGLE_ARTIST_INTENT_KEY = "music-admin-google-artist-intent";
+
 type AuthContextValue = {
   user: User | null;
   role: string | null;
@@ -65,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const { data: profile, error } = await supabase
+      let { data: profile, error } = await supabase
         .from("profiles")
         .select("role, full_name, artist_name, artist_bio, artist_photo_url")
         .eq("id", currentUser.id)
@@ -80,6 +82,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
         logAuth("resolveRole:profile-error", error);
         return;
+      }
+
+      const googleArtistIntent = globalThis.localStorage.getItem(GOOGLE_ARTIST_INTENT_KEY) === "true";
+
+      if (googleArtistIntent && profile?.role !== "admin" && profile?.role !== "artist") {
+        const metadata = currentUser.user_metadata ?? {};
+        const fallbackName =
+          (typeof metadata.full_name === "string" && metadata.full_name.trim()) ||
+          (typeof metadata.name === "string" && metadata.name.trim()) ||
+          currentUser.email?.split("@")[0] ||
+          null;
+
+        const { error: claimError } = await supabase.rpc("claim_artist_profile", {
+          p_full_name: fallbackName,
+          p_artist_name: fallbackName,
+        });
+
+        if (!claimError) {
+          const claimResult = await supabase
+            .from("profiles")
+            .select("role, full_name, artist_name, artist_bio, artist_photo_url")
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+          if (!claimResult.error) {
+            profile = claimResult.data;
+          } else {
+            logAuth("resolveRole:claim-refetch-error", claimResult.error);
+          }
+        } else {
+          logAuth("resolveRole:claim-error", claimError);
+        }
+
+        globalThis.localStorage.removeItem(GOOGLE_ARTIST_INTENT_KEY);
+      } else if (googleArtistIntent) {
+        globalThis.localStorage.removeItem(GOOGLE_ARTIST_INTENT_KEY);
       }
 
       lastResolvedUserId = currentUser.id;
