@@ -6,7 +6,7 @@ import { useAuth } from "@/features/auth/useAuth";
 import { useTheme } from "@/features/theme/ThemeProvider";
 
 export default function LoginPage() {
-  const { user, isAdmin, isArtist, loading } = useAuth();
+  const { user, isAdmin, isArtist, loading, role, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   if (!loading && user && (isAdmin || isArtist)) {
@@ -38,7 +38,30 @@ export default function LoginPage() {
           Publie tes morceaux, gère ton catalogue et construis ta communauté.
         </p>
         <div className="mt-6">
-          <LoginForm />
+          {!loading && user && !isAdmin && !isArtist ? (
+            <div className="space-y-4">
+              <div className="theme-section rounded-2xl border p-4">
+                <p className="theme-text-main text-sm font-semibold">Compte connecté mais non autorisé</p>
+                <p className="theme-text-muted mt-2 text-sm">
+                  Ce compte Google existe bien, mais son rôle actuel est{" "}
+                  <span className="theme-text-main font-semibold">{role ?? "inconnu"}</span>.
+                </p>
+                <p className="theme-text-muted mt-2 text-sm">
+                  Pour accéder au web artiste, le profil doit avoir le rôle <span className="theme-text-main font-semibold">artist</span>{" "}
+                  ou <span className="theme-text-main font-semibold">admin</span> dans <code>profiles</code>.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => void logout()}
+                className="theme-button-secondary w-full rounded-xl px-4 py-2.5 text-sm font-semibold"
+              >
+                Se déconnecter
+              </button>
+            </div>
+          ) : (
+            <LoginForm />
+          )}
         </div>
       </div>
     </div>
