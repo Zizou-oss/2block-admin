@@ -9,6 +9,7 @@ export default function ArtistProfilePage() {
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [bio, setBio] = useState("");
 
   useEffect(() => {
@@ -19,12 +20,30 @@ export default function ArtistProfilePage() {
 
   async function saveProfile() {
     if (!user) return;
+    setSaving(true);
+    let nextPhotoUrl = photoUrl.trim() || null;
+
+    if (photoFile) {
+      const extMatch = photoFile.name.toLowerCase().match(/\.[a-z0-9]+$/);
+      const ext = extMatch ? extMatch[0] : ".jpg";
+      const path = `artists/${user.id}/${crypto.randomUUID()}${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("artist-photos")
+        .upload(path, photoFile, { upsert: true });
+      if (uploadError) {
+        setSaving(false);
+        toast.error(uploadError.message);
+        return;
+      }
+      const { data: publicData } = supabase.storage.from("artist-photos").getPublicUrl(path);
+      nextPhotoUrl = publicData?.publicUrl ?? null;
+    }
+
     const payload = {
       artist_name: name.trim() || null,
-      artist_photo_url: photoUrl.trim() || null,
+      artist_photo_url: nextPhotoUrl,
       artist_bio: bio.trim() || null,
     };
-    setSaving(true);
     const { error } = await supabase.from("profiles").update(payload).eq("id", user.id);
     setSaving(false);
     if (error) {
@@ -32,6 +51,8 @@ export default function ArtistProfilePage() {
       return;
     }
     toast.success("Profil artiste mis a jour");
+    setPhotoFile(null);
+    setPhotoUrl(nextPhotoUrl || "");
   }
 
   return (
@@ -48,12 +69,22 @@ export default function ArtistProfilePage() {
           placeholder="Nom d'artiste"
           className="theme-input rounded-xl px-3 py-2 text-sm"
         />
-        <input
-          value={photoUrl}
-          onChange={(e) => setPhotoUrl(e.target.value)}
-          placeholder="URL photo d'artiste (optionnel)"
-          className="theme-input rounded-xl px-3 py-2 text-sm"
-        />
+        <div className="space-y-2">
+          <label className="theme-text-soft block text-sm font-medium">Photo artiste (upload)</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPhotoFile(e.target.files?.[0] ?? null)}
+            className="theme-input rounded-xl px-3 py-2 text-sm"
+          />
+          {photoUrl ? (
+            <img
+              src={photoUrl}
+              alt="Photo artiste"
+              className="h-24 w-24 rounded-2xl object-cover ring-1 ring-white/10"
+            />
+          ) : null}
+        </div>
         <textarea
           value={bio}
           onChange={(e) => setBio(e.target.value)}

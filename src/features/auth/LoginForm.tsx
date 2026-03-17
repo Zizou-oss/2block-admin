@@ -10,7 +10,7 @@ export function LoginForm() {
   const { login } = useAuth();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [artistName, setArtistName] = useState("");
-  const [artistPhotoUrl, setArtistPhotoUrl] = useState("");
+  const [artistPhotoFile, setArtistPhotoFile] = useState<File | null>(null);
   const [artistBio, setArtistBio] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,12 +31,16 @@ export function LoginForm() {
         toast.error("Nom d'artiste requis");
         return;
       }
+      if (!artistPhotoFile) {
+        toast.error("Photo artiste requise");
+        return;
+      }
       if (trimmedPassword.length < 8) {
         toast.error("Mot de passe trop court (min 8 caracteres)");
         return;
       }
       setLoading(true);
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: trimmedEmail,
         password: trimmedPassword,
         options: {
@@ -45,7 +49,6 @@ export function LoginForm() {
             role: "artist",
             full_name: artistName.trim(),
             artist_name: artistName.trim(),
-            artist_photo_url: artistPhotoUrl.trim() || null,
             artist_bio: artistBio.trim() || null,
           },
         },
@@ -54,6 +57,26 @@ export function LoginForm() {
       if (error) {
         toast.error(error.message);
         return;
+      }
+      if (artistPhotoFile && data.session?.user) {
+        const userId = data.session.user.id;
+        const extMatch = artistPhotoFile.name.toLowerCase().match(/\.[a-z0-9]+$/);
+        const ext = extMatch ? extMatch[0] : ".jpg";
+        const path = `artists/${userId}/${crypto.randomUUID()}${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from("artist-photos")
+          .upload(path, artistPhotoFile, { upsert: true });
+        if (!uploadError) {
+          const { data: publicData } = supabase.storage
+            .from("artist-photos")
+            .getPublicUrl(path);
+          const publicUrl = publicData?.publicUrl ?? null;
+          if (publicUrl) {
+            await supabase.from("profiles").update({ artist_photo_url: publicUrl }).eq("id", userId);
+          }
+        } else {
+          toast.error("Upload photo impossible. Reessaye apres confirmation.");
+        }
       }
       toast.success("Compte artiste créé. Vérifie ton email pour confirmer.");
       setMode("login");
@@ -113,11 +136,11 @@ export function LoginForm() {
             />
           </div>
           <div>
-            <label className="theme-text-soft mb-1 block text-sm font-medium">Photo (URL, optionnel)</label>
+            <label className="theme-text-soft mb-1 block text-sm font-medium">Photo artiste (obligatoire)</label>
             <input
-              type="url"
-              value={artistPhotoUrl}
-              onChange={(e) => setArtistPhotoUrl(e.target.value)}
+              type="file"
+              accept="image/*"
+              onChange={(e) => setArtistPhotoFile(e.target.files?.[0] ?? null)}
               className="theme-input w-full rounded-xl px-3 py-2.5"
             />
           </div>
