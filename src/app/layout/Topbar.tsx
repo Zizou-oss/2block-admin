@@ -25,7 +25,7 @@ export function Topbar({ onOpenMenu }: { onOpenMenu?: () => void }) {
   }
 
   return (
-    <header className="relative flex flex-wrap items-center justify-between gap-3 border-b border-white/8 px-4 py-4 md:px-6">
+    <header className="relative sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-white/8 bg-[color:var(--panel)]/80 px-4 py-4 backdrop-blur-xl md:px-6">
       {isNetworkBusy ? (
         <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-white/[0.08]">
           <div className="theme-button-brand h-full w-1/3 animate-pulse rounded" />

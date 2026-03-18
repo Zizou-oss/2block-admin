@@ -42,7 +42,7 @@ function SidebarLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 export function Sidebar() {
   return (
-    <aside className="glass page-enter hidden w-80 shrink-0 self-start rounded-[34px] p-5 md:sticky md:top-6 md:block md:max-h-[calc(100vh-3rem)] md:overflow-y-auto">
+    <aside className="glass page-enter hidden w-[21.5rem] shrink-0 self-start rounded-[30px] p-5 md:sticky md:top-4 md:block md:max-h-[calc(100vh-2rem)] md:overflow-y-auto">
       <div className="panel-spotlight theme-hero-card mb-6 overflow-hidden rounded-[30px] border px-4 py-5">
         <div className="relative flex items-start gap-3">
           <div className="theme-accent-box flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg">

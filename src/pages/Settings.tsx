@@ -152,37 +152,67 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="theme-title-gradient-soft text-xl font-bold">
+    <div className="space-y-6">
+      <div className="theme-section panel-spotlight rounded-[28px] border p-5 md:p-6">
+        <p className="theme-text-muted text-xs font-semibold uppercase tracking-[0.18em]">Operations</p>
+        <h1 className="theme-title-gradient-soft mt-2 text-3xl font-bold">
           Parametres
         </h1>
-        <p className="theme-text-muted text-sm">Actions operationnelles et verification de sante.</p>
+        <p className="theme-text-muted mt-2 text-sm">
+          Centre de controle: maintenance, publication mobile et diffusion push en une seule page.
+        </p>
       </div>
 
-      <div className="theme-section rounded-[24px] border p-4">
-        <h2 className="theme-text-main text-sm font-semibold">Base de donnees</h2>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={testConnection}
-            disabled={testing}
-            className="theme-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-50"
-          >
-            {testing ? "Test en cours..." : "Tester la connexion Supabase"}
-          </button>
-          <button
-            type="button"
-            onClick={refreshDailyStats}
-            disabled={refreshing}
-            className="theme-button-brand rounded-xl px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
-          >
-            {refreshing ? "Actualisation..." : "Actualiser les stats journalieres"}
-          </button>
+      <div className="grid gap-4 xl:grid-cols-2">
+        <div className="theme-section rounded-[24px] border p-4">
+          <h2 className="theme-text-main text-sm font-semibold">Base de donnees</h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={testConnection}
+              disabled={testing}
+              className="theme-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-50"
+            >
+              {testing ? "Test en cours..." : "Tester la connexion Supabase"}
+            </button>
+            <button
+              type="button"
+              onClick={refreshDailyStats}
+              disabled={refreshing}
+              className="theme-button-brand rounded-xl px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+            >
+              {refreshing ? "Actualisation..." : "Actualiser les stats journalieres"}
+            </button>
+          </div>
+        </div>
+
+        <div className="theme-section rounded-[24px] border p-4">
+          <h2 className="theme-text-main text-sm font-semibold">Notifications push</h2>
+          <p className="theme-text-muted mt-1 text-xs">
+            Teste directement l'envoi FCM depuis l'interface admin.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={sendSongPushTest}
+              disabled={sendingSongTest}
+              className="theme-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-50"
+            >
+              {sendingSongTest ? "Envoi..." : "Tester push nouveau son"}
+            </button>
+            <button
+              type="button"
+              onClick={sendUpdatePushTest}
+              disabled={sendingUpdateTest}
+              className="theme-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-50"
+            >
+              {sendingUpdateTest ? "Envoi..." : "Tester push mise a jour"}
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="theme-section rounded-[24px] border p-4">
+      <div className="theme-section rounded-[26px] border p-4 md:p-5">
         <div className="theme-hero-card relative overflow-hidden rounded-[28px] border p-4">
           <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/15 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-20 left-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-2xl" />
@@ -252,31 +282,6 @@ export default function SettingsPage() {
             className="theme-button-brand rounded-xl px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
           >
             {publishingUpdate ? "Publication..." : "Publier la mise a jour mobile"}
-          </button>
-        </div>
-      </div>
-
-      <div className="theme-section rounded-[24px] border p-4">
-        <h2 className="theme-text-main text-sm font-semibold">Notifications push</h2>
-        <p className="theme-text-muted mt-1 text-xs">
-          Teste directement l'envoi FCM depuis l'interface admin.
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={sendSongPushTest}
-            disabled={sendingSongTest}
-            className="theme-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-50"
-          >
-            {sendingSongTest ? "Envoi..." : "Tester push nouveau son"}
-          </button>
-          <button
-            type="button"
-            onClick={sendUpdatePushTest}
-            disabled={sendingUpdateTest}
-            className="theme-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-50"
-          >
-            {sendingUpdateTest ? "Envoi..." : "Tester push mise a jour"}
           </button>
         </div>
       </div>
