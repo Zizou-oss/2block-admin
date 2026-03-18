@@ -96,7 +96,7 @@ export default function ArtistProfilePage() {
           type="button"
           onClick={saveProfile}
           disabled={saving}
-          className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-950/30 disabled:opacity-50"
+          className="theme-button-brand rounded-xl px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
         >
           {saving ? "Enregistrement..." : "Enregistrer"}
         </button>

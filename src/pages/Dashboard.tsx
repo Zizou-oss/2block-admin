@@ -126,14 +126,14 @@ export default function DashboardPage() {
                 <YAxis stroke="#8f88a8" />
                 <Tooltip
                   contentStyle={{
-                    background: "rgba(11, 7, 20, 0.96)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "rgba(9, 24, 42, 0.96)",
+                    border: "1px solid rgba(148, 194, 236, 0.24)",
                     borderRadius: "16px",
-                    color: "#f7f3ff",
+                    color: "#e9f3ff",
                   }}
-                  labelStyle={{ color: "#b6abc9" }}
+                  labelStyle={{ color: "#b9cde1" }}
                 />
-                <Bar dataKey="value" fill="#8b5cf6" radius={[8, 8, 4, 4]} barSize={28} />
+                <Bar dataKey="value" fill="#1fb7ff" radius={[8, 8, 4, 4]} barSize={28} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -158,14 +158,14 @@ export default function DashboardPage() {
                 <YAxis stroke="#8f88a8" />
                 <Tooltip
                   contentStyle={{
-                    background: "rgba(11, 7, 20, 0.96)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "rgba(9, 24, 42, 0.96)",
+                    border: "1px solid rgba(148, 194, 236, 0.24)",
                     borderRadius: "16px",
-                    color: "#f7f3ff",
+                    color: "#e9f3ff",
                   }}
-                  labelStyle={{ color: "#b6abc9" }}
+                  labelStyle={{ color: "#b9cde1" }}
                 />
-                <Legend wrapperStyle={{ color: "#d9d4e7" }} />
+                <Legend wrapperStyle={{ color: "#c9e2f7" }} />
                 {safeData.trendSeries.map((series) => (
                   <Line
                     key={series.key}

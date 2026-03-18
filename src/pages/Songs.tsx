@@ -174,7 +174,7 @@ export default function SongsPage() {
                   {rows.map((song) => (
                     <tr
                       key={song.id}
-                      className={editingSongId === song.id ? "bg-violet-500/10 theme-text-soft" : "theme-text-soft"}
+                      className={editingSongId === song.id ? "bg-cyan-500/10 theme-text-soft" : "theme-text-soft"}
                     >
                       <td className="hidden px-3 py-3 sm:table-cell">{song.id}</td>
                       <td className="px-3 py-3">
@@ -188,10 +188,10 @@ export default function SongsPage() {
                       </td>
                       <td className="hidden px-3 py-3 lg:table-cell">
                         <div className="flex min-w-[130px] flex-wrap gap-2">
-                          <span className="inline-flex rounded-full bg-fuchsia-500/15 px-3 py-1 text-xs font-semibold text-fuchsia-300">
+                          <span className="inline-flex rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-semibold text-cyan-300">
                             {socialStats.data?.get(song.id)?.likes_count ?? 0} likes
                           </span>
-                          <span className="inline-flex rounded-full bg-sky-500/15 px-3 py-1 text-xs font-semibold text-sky-300">
+                          <span className="inline-flex rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300">
                             {socialStats.data?.get(song.id)?.comments_count ?? 0} commentaires
                           </span>
                         </div>

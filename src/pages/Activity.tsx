@@ -279,7 +279,7 @@ export default function ActivityPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex rounded-full bg-fuchsia-500/15 px-3 py-1 text-xs font-semibold uppercase text-fuchsia-300">
+                    <span className="inline-flex rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-semibold uppercase text-cyan-300">
                       {row.channel}
                     </span>
                   </td>

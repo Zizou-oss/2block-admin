@@ -1,52 +1,54 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
-  --bg: #06030d;
-  --ink: #f7f3ff;
-  --muted: #b6abc9;
-  --panel: rgba(17, 10, 31, 0.74);
-  --line: rgba(255, 255, 255, 0.08);
-  --primary: #8b5cf6;
-  --accent: #d946ef;
-  --text-main: #f7f3ff;
-  --text-soft: #ddd6f2;
-  --text-muted: #9f95b8;
+  --bg: #030a15;
+  --ink: #e9f3ff;
+  --muted: #9cb2c8;
+  --panel: rgba(9, 21, 36, 0.78);
+  --line: rgba(149, 199, 242, 0.16);
+  --primary: #1fb7ff;
+  --accent: #2dd4bf;
+  --highlight: #f59e0b;
+  --text-main: #e9f3ff;
+  --text-soft: #d4e6f8;
+  --text-muted: #9db2c8;
   --surface-soft: rgba(255, 255, 255, 0.05);
   --surface-strong: rgba(255, 255, 255, 0.08);
   --surface-tint: rgba(255, 255, 255, 0.03);
-  --input-bg: rgba(255, 255, 255, 0.05);
-  --shell-gradient: linear-gradient(180deg, rgba(20, 12, 38, 0.86) 0%, rgba(10, 7, 19, 0.84) 100%);
-  --section-gradient: linear-gradient(180deg, rgba(18, 11, 34, 0.72) 0%, rgba(9, 6, 17, 0.58) 100%);
-  --hero-gradient: linear-gradient(180deg, rgba(124, 58, 237, 0.2) 0%, rgba(10, 7, 19, 0.2) 100%);
-  --hero-border: rgba(167, 139, 250, 0.2);
-  --thead-bg: linear-gradient(90deg, rgba(124, 58, 237, 0.32) 0%, rgba(217, 70, 239, 0.18) 100%);
-  --spotlight-a: rgba(217, 70, 239, 0.14);
-  --spotlight-b: rgba(59, 130, 246, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --shell-gradient: linear-gradient(180deg, rgba(9, 19, 33, 0.9) 0%, rgba(6, 13, 24, 0.88) 100%);
+  --section-gradient: linear-gradient(180deg, rgba(11, 24, 41, 0.74) 0%, rgba(8, 17, 30, 0.62) 100%);
+  --hero-gradient: linear-gradient(135deg, rgba(31, 183, 255, 0.2) 0%, rgba(45, 212, 191, 0.14) 45%, rgba(245, 158, 11, 0.2) 100%);
+  --hero-border: rgba(103, 192, 255, 0.26);
+  --thead-bg: linear-gradient(90deg, rgba(31, 183, 255, 0.24) 0%, rgba(45, 212, 191, 0.2) 100%);
+  --spotlight-a: rgba(31, 183, 255, 0.18);
+  --spotlight-b: rgba(45, 212, 191, 0.14);
 }
 
 html[data-theme="light"] {
-  --bg: #f7f4ff;
-  --ink: #1d1530;
-  --muted: #6e6387;
-  --panel: rgba(255, 255, 255, 0.8);
-  --line: rgba(96, 76, 132, 0.14);
-  --primary: #7c3aed;
-  --accent: #c026d3;
-  --text-main: #1d1530;
-  --text-soft: #34284e;
-  --text-muted: #6f6488;
+  --bg: #f4f9ff;
+  --ink: #12233a;
+  --muted: #607894;
+  --panel: rgba(255, 255, 255, 0.86);
+  --line: rgba(65, 113, 154, 0.2);
+  --primary: #0ea5e9;
+  --accent: #059669;
+  --highlight: #d97706;
+  --text-main: #10263f;
+  --text-soft: #274464;
+  --text-muted: #5f7894;
   --surface-soft: rgba(255, 255, 255, 0.72);
-  --surface-strong: rgba(124, 58, 237, 0.1);
-  --surface-tint: rgba(124, 58, 237, 0.04);
-  --input-bg: rgba(255, 255, 255, 0.82);
-  --shell-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 239, 255, 0.86) 100%);
-  --section-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(244, 238, 255, 0.74) 100%);
-  --hero-gradient: linear-gradient(180deg, rgba(124, 58, 237, 0.12) 0%, rgba(255, 255, 255, 0.76) 100%);
-  --hero-border: rgba(124, 58, 237, 0.16);
-  --thead-bg: linear-gradient(90deg, rgba(124, 58, 237, 0.12) 0%, rgba(217, 70, 239, 0.08) 100%);
-  --spotlight-a: rgba(124, 58, 237, 0.08);
-  --spotlight-b: rgba(217, 70, 239, 0.05);
+  --surface-strong: rgba(14, 165, 233, 0.12);
+  --surface-tint: rgba(14, 165, 233, 0.04);
+  --input-bg: rgba(255, 255, 255, 0.84);
+  --shell-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(239, 248, 255, 0.9) 100%);
+  --section-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(242, 249, 255, 0.8) 100%);
+  --hero-gradient: linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(5, 150, 105, 0.1) 48%, rgba(217, 119, 6, 0.12) 100%);
+  --hero-border: rgba(14, 165, 233, 0.2);
+  --thead-bg: linear-gradient(90deg, rgba(14, 165, 233, 0.14) 0%, rgba(5, 150, 105, 0.12) 100%);
+  --spotlight-a: rgba(14, 165, 233, 0.1);
+  --spotlight-b: rgba(5, 150, 105, 0.08);
 }
 
 * {
@@ -66,34 +68,34 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
   background:
-    radial-gradient(52rem 52rem at -10% -8%, color-mix(in srgb, var(--primary) 24%, transparent), transparent 55%),
-    radial-gradient(42rem 42rem at 112% 12%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 46%),
-    radial-gradient(28rem 28rem at 50% 120%, rgba(59, 130, 246, 0.12), transparent 58%),
-    linear-gradient(180deg, color-mix(in srgb, var(--bg) 78%, #080411) 0%, var(--bg) 100%);
+    radial-gradient(52rem 52rem at -10% -8%, color-mix(in srgb, var(--primary) 26%, transparent), transparent 58%),
+    radial-gradient(42rem 42rem at 112% 10%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 48%),
+    radial-gradient(30rem 30rem at 50% 120%, color-mix(in srgb, var(--highlight) 18%, transparent), transparent 58%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 82%, #061123) 0%, var(--bg) 100%);
   background-attachment: fixed;
 }
 
 ::selection {
-  background: rgba(139, 92, 246, 0.35);
+  background: color-mix(in srgb, var(--primary) 48%, transparent);
   color: #fff;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Outfit", "Space Grotesk", sans-serif;
+  font-family: "Sora", "Manrope", sans-serif;
   letter-spacing: 0.01em;
 }
 
 .glass {
   background: var(--panel);
   border: 1px solid var(--line);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(22px) saturate(120%);
   box-shadow:
-    0 22px 60px rgba(0, 0, 0, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 24px 60px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .page-enter {
@@ -123,12 +125,12 @@ h3 {
   height: 180px;
   top: -72px;
   right: -72px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.26), transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary) 32%, transparent), transparent 70%);
   pointer-events: none;
 }
 
 .shimmer {
-  background: linear-gradient(110deg, rgba(34, 21, 55, 0.92) 8%, rgba(80, 50, 122, 0.88) 18%, rgba(34, 21, 55, 0.92) 33%);
+  background: linear-gradient(110deg, rgba(17, 34, 58, 0.92) 8%, rgba(29, 72, 112, 0.88) 18%, rgba(17, 34, 58, 0.92) 33%);
   background-size: 220% 100%;
   animation: shimmer 1.4s linear infinite;
 }
@@ -150,8 +152,8 @@ h3 {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top right, var(--spotlight-a), transparent 28%),
-    radial-gradient(circle at bottom left, var(--spotlight-b), transparent 24%);
+    radial-gradient(circle at top right, var(--spotlight-a), transparent 30%),
+    radial-gradient(circle at bottom left, var(--spotlight-b), transparent 26%);
   pointer-events: none;
 }
 
@@ -209,19 +211,19 @@ h3 {
 }
 
 .theme-button-brand {
-  background: linear-gradient(90deg, #7c3aed 0%, #c026d3 100%);
+  background: linear-gradient(120deg, var(--primary) 0%, var(--accent) 55%, var(--highlight) 100%);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.24);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--primary) 34%, transparent);
 }
 
 .theme-button-brand:hover {
-  filter: brightness(1.04);
+  filter: brightness(1.03);
 }
 
 .theme-button-success {
   background: #059669;
   color: #fff;
-  box-shadow: 0 10px 24px rgba(5, 150, 105, 0.18);
+  box-shadow: 0 10px 24px rgba(5, 150, 105, 0.24);
 }
 
 .theme-button-success:hover {
@@ -229,9 +231,9 @@ h3 {
 }
 
 .theme-button-danger {
-  background: #e11d48;
+  background: #dc2626;
   color: #fff;
-  box-shadow: 0 10px 24px rgba(225, 29, 72, 0.18);
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.2);
 }
 
 .theme-button-danger:hover {
@@ -256,37 +258,37 @@ h3 {
 }
 
 .theme-title-gradient {
-  background-image: linear-gradient(90deg, #f3e8ff 0%, #f5d0fe 48%, #c4b5fd 100%);
+  background-image: linear-gradient(108deg, #c9edff 0%, #9ff3de 46%, #ffe2ae 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .theme-title-gradient-soft {
-  background-image: linear-gradient(90deg, #e9d5ff 0%, #f5d0fe 100%);
+  background-image: linear-gradient(108deg, #d9f3ff 0%, #bbf7e6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .theme-accent-chip {
-  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
-  background: color-mix(in srgb, var(--primary) 14%, transparent);
-  color: color-mix(in srgb, var(--primary) 52%, white);
+  border: 1px solid color-mix(in srgb, var(--primary) 34%, transparent);
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  color: color-mix(in srgb, var(--primary) 58%, white);
 }
 
 .theme-accent-box {
-  border: 1px solid color-mix(in srgb, var(--primary) 24%, transparent);
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
-  color: color-mix(in srgb, var(--primary) 52%, white);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: color-mix(in srgb, var(--accent) 64%, white);
 }
 
 .theme-sync-text {
-  color: color-mix(in srgb, var(--primary) 68%, white);
+  color: color-mix(in srgb, var(--accent) 70%, white);
 }
 
 .theme-hero-kicker {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .theme-hero-copy {
@@ -304,11 +306,11 @@ html[data-theme="light"] .theme-hero-card {
 }
 
 html[data-theme="light"] .theme-title-gradient {
-  background-image: linear-gradient(90deg, #5b21b6 0%, #7c3aed 52%, #a21caf 100%);
+  background-image: linear-gradient(108deg, #0369a1 0%, #0f766e 56%, #a16207 100%);
 }
 
 html[data-theme="light"] .theme-title-gradient-soft {
-  background-image: linear-gradient(90deg, #6d28d9 0%, #9333ea 100%);
+  background-image: linear-gradient(108deg, #0284c7 0%, #0f766e 100%);
 }
 
 html[data-theme="light"] .theme-hero-kicker,
@@ -318,7 +320,7 @@ html[data-theme="light"] .theme-hero-pill {
 }
 
 html[data-theme="light"] .theme-hero-pill {
-  border-color: rgba(124, 58, 237, 0.16);
+  border-color: rgba(14, 165, 233, 0.18);
   background: rgba(255, 255, 255, 0.62);
 }
 
@@ -369,7 +371,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: color-mix(in srgb, var(--primary) 62%, white);
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 26%, transparent);
 }
 
 button {
@@ -385,5 +387,5 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: rgba(139, 92, 246, 0.08);
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
 }

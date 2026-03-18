@@ -25,9 +25,9 @@ function SidebarLinks({ onNavigate }: { onNavigate?: () => void }) {
           onClick={onNavigate}
           className={({ isActive }) =>
             cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
+              "flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition",
               isActive
-                ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-950/30"
+                ? "theme-button-brand text-white shadow-lg"
                 : "text-[color:var(--text-soft)] hover:bg-[color:var(--surface-soft)] hover:text-[color:var(--text-main)]",
             )
           }
@@ -42,18 +42,18 @@ function SidebarLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 export function Sidebar() {
   return (
-    <aside className="glass page-enter hidden w-72 shrink-0 self-start rounded-3xl p-5 md:sticky md:top-6 md:block md:max-h-[calc(100vh-3rem)] md:overflow-y-auto">
-      <div className="panel-spotlight theme-hero-card mb-6 overflow-hidden rounded-[26px] border px-4 py-4">
+    <aside className="glass page-enter hidden w-80 shrink-0 self-start rounded-[34px] p-5 md:sticky md:top-6 md:block md:max-h-[calc(100vh-3rem)] md:overflow-y-auto">
+      <div className="panel-spotlight theme-hero-card mb-6 overflow-hidden rounded-[30px] border px-4 py-5">
         <div className="relative flex items-start gap-3">
-          <div className="theme-accent-box flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg shadow-violet-950/25">
+          <div className="theme-accent-box flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg">
             <Disc3 size={22} />
           </div>
           <div className="min-w-0">
             <p className="theme-sync-text text-xs font-semibold uppercase tracking-[0.24em]">2Block</p>
             <h1 className="theme-title-gradient text-2xl font-extrabold">
-              Admin Musique
+              Web Admin
             </h1>
-            <p className="theme-text-muted mt-2 text-sm">Pilotage, catalogue, activite et diffusion.</p>
+            <p className="theme-text-muted mt-2 text-sm">Pilotage artiste, catalogue, activite et diffusion en temps reel.</p>
           </div>
         </div>
       </div>
@@ -61,11 +61,11 @@ export function Sidebar() {
       <div className="theme-section mt-6 rounded-[24px] border p-4">
         <div className="theme-accent-chip mb-2 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]">
           <Sparkles size={12} />
-          Console live
+          Studio mode
         </div>
-        <p className="theme-text-main text-sm font-semibold">Même univers que le site public</p>
+        <p className="theme-text-main text-sm font-semibold">Console orientee performance</p>
         <p className="theme-text-muted mt-1 text-xs leading-relaxed">
-          Charte sombre, focus violet et lecture visuelle cohérente sur tout l'écosystème 2Block.
+          Une interface plus claire pour publier vite, suivre les tendances et gerer les artistes sans friction.
         </p>
       </div>
     </aside>
@@ -109,7 +109,7 @@ export function MobileDrawer({
           <div>
             <p className="theme-sync-text text-xs font-semibold uppercase tracking-[0.24em]">2Block</p>
             <h2 className="theme-title-gradient-soft text-lg font-extrabold">
-              Menu admin
+              Navigation
             </h2>
           </div>
           <button
@@ -125,7 +125,7 @@ export function MobileDrawer({
         <div className="theme-section mt-6 rounded-[22px] border p-4">
           <p className="theme-text-main text-sm font-semibold">Vue mobile premium</p>
           <p className="theme-text-muted mt-1 text-xs">
-            Le menu reste fixe, lisible et cohérent avec le site public 2Block.
+            Interface compacte, lisible et coherente avec le nouveau design desktop.
           </p>
         </div>
       </aside>

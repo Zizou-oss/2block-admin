@@ -8,7 +8,7 @@ import { useTheme } from "@/features/theme/ThemeProvider";
 
 export function Topbar({ onOpenMenu }: { onOpenMenu?: () => void }) {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const fetching = useIsFetching();
   const mutating = useIsMutating();
@@ -28,7 +28,7 @@ export function Topbar({ onOpenMenu }: { onOpenMenu?: () => void }) {
     <header className="relative flex flex-wrap items-center justify-between gap-3 border-b border-white/8 px-4 py-4 md:px-6">
       {isNetworkBusy ? (
         <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-white/[0.08]">
-          <div className="h-full w-1/3 animate-pulse rounded bg-gradient-to-r from-violet-500 to-fuchsia-500" />
+          <div className="theme-button-brand h-full w-1/3 animate-pulse rounded" />
         </div>
       ) : null}
       <div className="flex min-w-0 items-center gap-2">
@@ -41,9 +41,9 @@ export function Topbar({ onOpenMenu }: { onOpenMenu?: () => void }) {
           <Menu size={16} />
         </button>
         <div className="min-w-0">
-          <p className="theme-text-muted text-xs uppercase tracking-[0.24em]">Console Admin</p>
+          <p className="theme-text-muted text-xs uppercase tracking-[0.24em]">Web Admin</p>
           <p className="theme-text-main max-w-[12rem] truncate text-sm font-medium sm:max-w-[22rem]">
-            {user?.email ?? "Utilisateur inconnu"}
+            {profile?.artist_name?.trim() || profile?.full_name?.trim() || user?.email || "Utilisateur inconnu"}
           </p>
           {isNetworkBusy ? (
             <p className="theme-sync-text mt-1 text-xs">Synchronisation en cours...</p>
@@ -52,7 +52,7 @@ export function Topbar({ onOpenMenu }: { onOpenMenu?: () => void }) {
         <div className="hidden items-center gap-2 md:flex">
           <span className="soft-pill inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]">
             <Sparkles size={12} />
-            Design 2Block
+            Edition Studio
           </span>
           <span className="soft-pill inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]">
             <Activity size={12} />

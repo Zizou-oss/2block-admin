@@ -175,7 +175,7 @@ export default function SettingsPage() {
             type="button"
             onClick={refreshDailyStats}
             disabled={refreshing}
-            className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-950/30 disabled:opacity-50"
+            className="theme-button-brand rounded-xl px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
           >
             {refreshing ? "Actualisation..." : "Actualiser les stats journalieres"}
           </button>
@@ -185,7 +185,7 @@ export default function SettingsPage() {
       <div className="theme-section rounded-[24px] border p-4">
         <div className="theme-hero-card relative overflow-hidden rounded-[28px] border p-4">
           <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/15 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-20 left-10 h-40 w-40 rounded-full bg-fuchsia-300/20 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-10 h-40 w-40 rounded-full bg-emerald-300/20 blur-2xl" />
           <p className="theme-hero-kicker text-[11px] font-semibold uppercase tracking-[0.2em]">Release mobile</p>
           <h2 className="mt-1 text-lg font-extrabold">Mise a jour de version</h2>
           <p className="theme-hero-copy mt-1 text-xs">
@@ -249,7 +249,7 @@ export default function SettingsPage() {
             type="button"
             onClick={publishAppUpdate}
             disabled={publishingUpdate}
-            className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-950/30 disabled:opacity-50"
+            className="theme-button-brand rounded-xl px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
           >
             {publishingUpdate ? "Publication..." : "Publier la mise a jour mobile"}
           </button>

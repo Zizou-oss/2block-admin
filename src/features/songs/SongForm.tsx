@@ -168,7 +168,7 @@ export function SongForm({
           onDrop={onDropFile}
           onClick={() => fileInputRef.current?.click()}
           className={`cursor-pointer rounded-[24px] border-2 border-dashed px-4 py-6 text-center md:col-span-2 ${
-            isDragOver ? "border-violet-400 bg-violet-500/12" : "theme-surface-soft border-white/12"
+            isDragOver ? "border-cyan-300 bg-cyan-400/10" : "theme-surface-soft border-white/12"
           }`}
         >
           <p className="theme-text-main text-sm font-medium">Glisse-dépose ton fichier audio ici</p>
@@ -194,7 +194,7 @@ export function SongForm({
             </div>
             <div className="h-2 w-full rounded bg-white/[0.08]">
               <div
-                className="h-2 rounded bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all"
+                className="theme-button-brand h-2 rounded transition-all"
                 style={{ width: `${Math.max(0, Math.min(100, uploadProgress))}%` }}
               />
             </div>
@@ -203,7 +203,7 @@ export function SongForm({
         <button
           type="submit"
           disabled={loading}
-          className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-950/30 disabled:opacity-50"
+          className="theme-button-brand rounded-xl px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
         >
           {loading
             ? mode === "edit"

@@ -118,7 +118,7 @@ export function LoginForm() {
             onClick={() => setMode("login")}
             className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
               mode === "login"
-                ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white"
+                ? "theme-button-brand text-white"
                 : "theme-button-secondary"
             }`}
           >
@@ -129,7 +129,7 @@ export function LoginForm() {
             onClick={() => setMode("signup")}
             className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
               mode === "signup"
-                ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white"
+                ? "theme-button-brand text-white"
                 : "theme-button-secondary"
             }`}
           >
@@ -194,7 +194,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-950/30 disabled:opacity-50"
+        className="theme-button-brand w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
       >
         {loading
           ? mode === "signup"
