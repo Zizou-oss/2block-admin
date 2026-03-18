@@ -169,14 +169,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       void resolveRole(session?.user ?? null);
     });
 
-    supabase.auth.getSession().then(({ data }) => {
+    (async () => {
+      const url = new URL(window.location.href);
+      const oauthError = url.searchParams.get("error_description") || url.searchParams.get("error");
+      if (oauthError) {
+        setAuthError(decodeURIComponent(oauthError));
+      }
+
+      if (url.searchParams.get("code")) {
+        const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+        if (error) {
+          setAuthError(error.message);
+        }
+
+        url.searchParams.delete("code");
+        url.searchParams.delete("error");
+        url.searchParams.delete("error_description");
+        url.searchParams.delete("state");
+        window.history.replaceState({}, document.title, url.toString());
+      }
+
+      const { data } = await supabase.auth.getSession();
       logAuth("getSession:init", {
         userId: data.session?.user?.id ?? null,
         email: data.session?.user?.email ?? null,
         expiresAt: data.session?.expires_at ?? null,
       });
-      void resolveRole(data.session?.user ?? null);
-    });
+      await resolveRole(data.session?.user ?? null);
+    })();
 
     return () => {
       mounted = false;
