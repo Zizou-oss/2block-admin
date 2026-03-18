@@ -9,6 +9,25 @@ import { fetchActivityForExport, useActivity } from "@/features/activity/useActi
 import { useSongCommentsModeration } from "@/features/activity/useSongCommentsModeration";
 import { useSupportDeclarations } from "@/features/activity/useSupportDeclarations";
 
+function toErrorMessage(error: unknown) {
+  if (!error) return "Erreur inconnue";
+  if (typeof error === "string") return error;
+  if (typeof error === "object") {
+    const record = error as Record<string, unknown>;
+    const parts = [record.message, record.details, record.hint]
+      .filter((part): part is string => typeof part === "string" && part.trim().length > 0);
+    if (parts.length > 0) {
+      return parts.join(" | ");
+    }
+  }
+  if (error instanceof Error && error.message) return error.message;
+  try {
+    return JSON.stringify(error, null, 2);
+  } catch {
+    return String(error);
+  }
+}
+
 export default function ActivityPage() {
   const [page, setPage] = useState(1);
   const [supportPage, setSupportPage] = useState(1);
@@ -61,6 +80,10 @@ export default function ActivityPage() {
   const commentRows = comments.data?.rows ?? [];
   const commentsTotal = comments.data?.total ?? 0;
   const commentsTotalPages = Math.max(1, Math.ceil(commentsTotal / commentsPageSize));
+  const commentError = comments.error as Error | null;
+  const activityErrorMessage = toErrorMessage(error);
+  const supportErrorMessage = toErrorMessage(supportError);
+  const commentsErrorMessage = toErrorMessage(commentError);
 
   function resetPageOnFilterChange() {
     setPage(1);
@@ -175,7 +198,7 @@ export default function ActivityPage() {
       {isLoading ? (
         <p className="theme-text-muted text-sm">Chargement de l'activite...</p>
       ) : error ? (
-        <EmptyState title="Impossible de charger l'activite" />
+        <EmptyState title="Impossible de charger l'activite" description={activityErrorMessage} />
       ) : rows.length === 0 ? (
         <EmptyState title="Aucune activite pour le moment" />
       ) : (
@@ -229,7 +252,10 @@ export default function ActivityPage() {
         {isSupportLoading ? (
           <p className="theme-text-muted text-sm">Chargement des soutiens...</p>
         ) : supportError ? (
-          <EmptyState title="Impossible de charger les soutiens declarés" />
+          <EmptyState
+            title="Impossible de charger les soutiens declarés"
+            description={supportErrorMessage}
+          />
         ) : supportRows.length === 0 ? (
           <EmptyState
             title="Aucun soutien declaré"
@@ -287,8 +313,11 @@ export default function ActivityPage() {
 
         {comments.isLoading ? (
           <p className="theme-text-muted text-sm">Chargement des commentaires...</p>
-        ) : comments.error ? (
-          <EmptyState title="Impossible de charger les commentaires" />
+        ) : commentError ? (
+          <EmptyState
+            title="Impossible de charger les commentaires"
+            description={commentsErrorMessage}
+          />
         ) : commentRows.length === 0 ? (
           <EmptyState
             title="Aucun commentaire pour le moment"

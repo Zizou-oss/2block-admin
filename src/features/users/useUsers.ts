@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 type UserStatsRow = {
   user_id: string;
-  email: string;
+  email: string | null;
   songs_downloaded: number;
   listening_events: number;
   seconds_total: number;
@@ -14,7 +14,7 @@ type UserStatsRow = {
 
 type ProfileNameRow = {
   id: string;
-  email: string;
+  email: string | null;
   full_name: string | null;
   role: string | null;
 };
@@ -24,7 +24,8 @@ type UserStatsWithName = UserStatsRow & {
   role: string;
 };
 
-function fallbackNameFromEmail(email: string) {
+function fallbackNameFromEmail(email: string | null | undefined) {
+  if (!email) return "Utilisateur";
   const candidate = email.split("@")[0]?.trim();
   return candidate || "Utilisateur";
 }
@@ -78,22 +79,28 @@ export function useUsers() {
       const rows = (data ?? []) as UserStatsRow[];
       if (rows.length === 0) return [];
 
-      const userIds = Array.from(new Set(rows.map((row) => row.user_id)));
-      const { data: profileRows, error: profileError } = await supabase
-        .from("profiles")
-        .select("id,email,full_name,role")
-        .in("id", userIds);
+      const userIds = Array.from(
+        new Set(rows.map((row) => row.user_id).filter((id): id is string => Boolean(id))),
+      );
+      let profileRows: ProfileNameRow[] = [];
+      if (userIds.length > 0) {
+        const { data: fetchedProfiles, error: profileError } = await supabase
+          .from("profiles")
+          .select("id,email,full_name,role")
+          .in("id", userIds);
 
-      if (profileError) throw profileError;
+        if (profileError) throw profileError;
+        profileRows = (fetchedProfiles ?? []) as ProfileNameRow[];
+      }
 
       const profileMap = new Map<string, ProfileNameRow>(
-        ((profileRows ?? []) as ProfileNameRow[]).map((profile) => [profile.id, profile]),
+        profileRows.map((profile) => [profile.id, profile]),
       );
 
       return rows.map((row) => {
         const profile = profileMap.get(row.user_id);
         const userName = profile?.full_name?.trim()
-          || fallbackNameFromEmail(profile?.email || row.email);
+          || fallbackNameFromEmail(profile?.email ?? row.email);
         return {
           ...row,
           user_name: userName,

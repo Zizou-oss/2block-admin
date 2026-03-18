@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 export type ActivityRow = {
   id: number;
-  user_id: string;
+  user_id: string | null;
   user_name: string;
   user_email: string;
   song_title: string;
@@ -17,8 +17,8 @@ export type ActivityRow = {
 
 type ActivityRawRow = {
   id: number;
-  user_id: string;
-  user_email: string;
+  user_id: string | null;
+  user_email: string | null;
   song_title: string;
   song_artist: string;
   seconds_listened: number;
@@ -28,7 +28,7 @@ type ActivityRawRow = {
 
 type ProfileNameRow = {
   id: string;
-  email: string;
+  email: string | null;
   full_name: string | null;
 };
 
@@ -42,7 +42,8 @@ export type ActivityFilters = {
   dateTo?: string;
 };
 
-function fallbackNameFromEmail(email: string) {
+function fallbackNameFromEmail(email: string | null | undefined) {
+  if (!email) return "Utilisateur";
   const candidate = email.split("@")[0]?.trim();
   return candidate || "Utilisateur";
 }
@@ -50,24 +51,31 @@ function fallbackNameFromEmail(email: string) {
 async function attachUserNames(rows: ActivityRawRow[]) {
   if (rows.length === 0) return [] as ActivityRow[];
 
-  const userIds = Array.from(new Set(rows.map((row) => row.user_id)));
-  const { data: profileRows, error: profileError } = await supabase
-    .from("profiles")
-    .select("id,email,full_name")
-    .in("id", userIds);
+  const userIds = Array.from(
+    new Set(rows.map((row) => row.user_id).filter((id): id is string => Boolean(id))),
+  );
+  let profileRows: ProfileNameRow[] = [];
+  if (userIds.length > 0) {
+    const { data: fetchedProfiles, error: profileError } = await supabase
+      .from("profiles")
+      .select("id,email,full_name")
+      .in("id", userIds);
 
-  if (profileError) throw profileError;
+    if (profileError) throw profileError;
+    profileRows = (fetchedProfiles ?? []) as ProfileNameRow[];
+  }
 
   const profileMap = new Map<string, ProfileNameRow>(
-    ((profileRows ?? []) as ProfileNameRow[]).map((profile) => [profile.id, profile]),
+    profileRows.map((profile) => [profile.id, profile]),
   );
 
   return rows.map((row) => {
-    const profile = profileMap.get(row.user_id);
+    const profile = row.user_id ? profileMap.get(row.user_id) : undefined;
     const userName = profile?.full_name?.trim()
-      || fallbackNameFromEmail(profile?.email || row.user_email);
+      || fallbackNameFromEmail(profile?.email ?? row.user_email);
     return {
       ...row,
+      user_email: row.user_email ?? "--",
       user_name: userName,
     };
   });
