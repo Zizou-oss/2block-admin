@@ -38,6 +38,11 @@ export default function LoginPage() {
           Publie tes morceaux, gère ton catalogue et construis ta communauté.
         </p>
         <div className="mt-6">
+          {authError && !user ? (
+            <div className="mb-4 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
+              Détail technique : {authError}
+            </div>
+          ) : null}
           {!loading && user && !isAdmin && !isArtist ? (
             <div className="space-y-4">
               <div className="theme-section rounded-2xl border p-4">
